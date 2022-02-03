@@ -1,23 +1,37 @@
+// Carregando selectbox das edições ao carregar a página.
 window.onload = function() {
 
     xhttpAssincrono(carryEditions,1);
 }
 
-function carryEditions(file){
-    
-    var comboEditions = document.getElementById("comboEditions");
+var itens = ['alpha', 'beta']
 
-    var editions = JSON.parse(file)   
+// Carrega as edições de Magic e adiciona a um array.
+function carryEditions(file){    
 
-     for(i = 0; i < editions.sets.length; i++){
+    var editions = JSON.parse(file)      
 
-        var option = document.createElement("option");        
-        option.value = editions.sets[i].code;
-        option.innerHTML = editions.sets[i].name;
-        comboEditions.appendChild(option);
+    for(i = 0; i < editions.sets.length; i++){
+
+        itens[i] = editions.sets[i].name; 
     }   
 
-    console.log(editions.sets)    
+    itens.sort();
+    addEditions() ;
+}
+
+function addEditions() {
+
+    var comboEditions = document.getElementById("comboEditions");
+
+    for(i = 0; i < itens.length; i++){
+
+        var option = document.createElement("option");        
+        option.value = i;
+        option.innerHTML = itens[i]
+        comboEditions.appendChild(option);       
+    } 
+
 }
 
 /*
@@ -42,7 +56,6 @@ function xhttpAssincrono(callBackFunction, type, value) {
             break;
         case 2:
             url += "cards?set=" + value;
-            console.log(url);
             break;
         case 3:
             url += "todos?userId=" + value;
