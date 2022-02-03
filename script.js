@@ -6,6 +6,12 @@ window.onload = function() {
 
 var itens = ['alpha', 'beta']
 
+var comboEditions = document.getElementById("comboEditions");
+
+var comboCards = document.getElementById("comboCards");
+
+comboEditions.addEventListener('click', callCodes);
+
 // Carrega as edições de Magic e adiciona a um array.
 function carryEditions(file){    
 
@@ -20,19 +26,75 @@ function carryEditions(file){
     addEditions() ;
 }
 
+// Preenche o combo das edições com os valores do array.
 function addEditions() {
-
-    var comboEditions = document.getElementById("comboEditions");
-
+    
     for(i = 0; i < itens.length; i++){
 
-        var option = document.createElement("option");        
+        var option = document.createElement("option"); 
         option.value = i;
         option.innerHTML = itens[i]
-        comboEditions.appendChild(option);       
+        comboEditions.appendChild(option);        
     } 
 
 }
+
+
+function callCodes() {
+
+    xhttpAssincrono(carryCodeEditions,1);
+}
+
+function carryCodeEditions(file){    
+
+    var editions = JSON.parse(file)      
+
+    var text = comboEditions.options[comboEditions.selectedIndex].text
+
+    var value = comboEditions.value
+
+    for(i = 0; i < editions.sets.length; i++){
+
+        if (text == editions.sets[i].name) {
+
+            value = editions.sets[i].code;
+
+        }
+    }
+
+    callCards(value)    
+}
+
+function callCards(value) {
+
+    xhttpAssincrono(carryCards,2,value);
+}
+
+function carryCards(file){    
+
+    removeComboCards()
+
+    var cards = JSON.parse(file)      
+
+    for(i = 0; i < cards.cards.length; i++){
+
+        var option = document.createElement("option"); 
+        option.value = i;
+        option.innerHTML = cards.cards[i].name;
+        comboCards.appendChild(option);           
+    }
+
+}
+
+function removeComboCards() {
+
+    while (comboCards.hasChildNodes()) {
+
+        comboCards.removeChild(comboCards.firstChild);
+    }
+}
+
+
 
 /*
  * Função AJAX base do tipo assíncrona.
