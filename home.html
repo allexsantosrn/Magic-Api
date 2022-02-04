@@ -24,19 +24,29 @@
 
     <div>
     <!-- Selectbox de seleção das edições -->
-    <select class="form-select" id="comboEditions">
-    <option selected disabled>Selecione um edição de Magic</option>    
+    <select class="form-select" id="comboEditions" onclick="ordenarEditionsCombo()">
+    <option selected disabled value="0">Selecione um edição de Magic</option>    
     </select>    
     </div>
 
-    <div style="margin-top: 20px;">
+    <div style="margin-top: 20px;"> 
     <!-- Selectbox de seleção das cartas -->
-    <select class="form-select2" id="comboCards">
-    <option selected disabled>Selecione uma carta da edição selecionada</option>    
+    <select class="form-select2" id="comboCards" onclick="ordenarCardsCombo()">
+    <option selected disabled value="0">Selecione uma carta da edição selecionada</option>    
     </select>  
     </div> 
 
-    <div id="content">
+    <div style="margin-top: 20px; margin-left: 180px;">
+        <button type="button" class="btn btn-primary btn-lg" id="viewCard" onclick="callCard()">Visualizar Carta</button>
+    </div>
+
+    <div id="content"> 
+        <h5 id="name" style="margin-top: 20px; margin-left: 180px;">Nome: </h5>
+        <img src="" id="imagem" style="margin-top: 10px; margin-left: 180px;">
+        <h5 id="rarity" style="margin-top: 10px; margin-left: 180px;">Raridade: </h5>
+        <h5 id="color" style="margin-top: 10px; margin-left: 180px;">Cor: </h5>
+        <h5 id="cost" style="margin-top: 10px; margin-left: 180px;">Custo: </h5>
+        <h5 id="type" style="margin-top: 10px; margin-left: 180px;">Tipo: </h5>
 
     </div>              
       

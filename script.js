@@ -1,97 +1,114 @@
 // Carregando selectbox das edições ao carregar a página.
 window.onload = function() {
 
-    xhttpAssincrono(carryEditions,1);
+    xhttpAssincrono(addEditions,1);
 }
-
-var itens = ['alpha', 'beta']
 
 var comboEditions = document.getElementById("comboEditions");
 
 var comboCards = document.getElementById("comboCards");
 
-comboEditions.addEventListener('click', callCodes);
+comboEditions.addEventListener('click', callCards);
 
-// Carrega as edições de Magic e adiciona a um array.
-function carryEditions(file){    
+// Carrega as edições de Magic e adiciona ao selectbox.
+function addEditions(file){    
 
     var editions = JSON.parse(file)      
 
     for(i = 0; i < editions.sets.length; i++){
-
-        itens[i] = editions.sets[i].name; 
-    }   
-
-    itens.sort();
-    addEditions() ;
-}
-
-// Preenche o combo das edições com os valores do array.
-function addEditions() {
-    
-    for(i = 0; i < itens.length; i++){
-
+        
         var option = document.createElement("option"); 
-        option.value = i;
-        option.innerHTML = itens[i]
-        comboEditions.appendChild(option);        
-    } 
-
+        option.value = editions.sets[i].code;
+        option.innerHTML = editions.sets[i].name;
+        comboEditions.appendChild(option);
+    }   
 }
 
+// Função que ordena os itens do selectbox das edições.
+function ordenarEditionsCombo() {
 
-function callCodes() {
+    var itensOrdenados = $('#comboEditions option').sort(function (a, b) {
+        return a.text < b.text ? -1 : 1;
+    });
 
-    xhttpAssincrono(carryCodeEditions,1);
+    $('#comboEditions').html(itensOrdenados);
 }
 
-function carryCodeEditions(file){    
+// Carregando selectbox das cartas de Magic.
+function callCards() {
 
-    var editions = JSON.parse(file)      
+    value = comboEditions.value;
 
-    var text = comboEditions.options[comboEditions.selectedIndex].text
-
-    var value = comboEditions.value
-
-    for(i = 0; i < editions.sets.length; i++){
-
-        if (text == editions.sets[i].name) {
-
-            value = editions.sets[i].code;
-
-        }
+    if (comboEditions.value != 0) {
+        xhttpAssincrono(addCards,2,value);
     }
-
-    callCards(value)    
 }
 
-function callCards(value) {
+// Carrega as cartas de Magic e adiciona ao selectbox.
+function addCards(file){    
 
-    xhttpAssincrono(carryCards,2,value);
-}
-
-function carryCards(file){    
-
-    removeComboCards()
-
-    var cards = JSON.parse(file)      
+    var cards = JSON.parse(file)     
+    
+    removeCardsCombo();
 
     for(i = 0; i < cards.cards.length; i++){
-
+           
         var option = document.createElement("option"); 
         option.value = i;
         option.innerHTML = cards.cards[i].name;
-        comboCards.appendChild(option);           
-    }
+        comboCards.appendChild(option);        
+    }  
 
 }
 
-function removeComboCards() {
+// Remove as cartas adicionadas ao selectbox.
+function removeCardsCombo() {
 
     while (comboCards.hasChildNodes()) {
 
         comboCards.removeChild(comboCards.firstChild);
     }
+}
+
+// Função que ordena os itens do selectbox das cartas.
+function ordenarCardsCombo() {
+
+    var itensOrdenados = $('#comboCards option').sort(function (a, b) {
+        return a.text < b.text ? -1 : 1;
+    });
+
+    $('#comboCards').html(itensOrdenados);
+}
+
+// Carregando a carta de Magic selecionada.
+function callCard() {
+
+    if (comboEditions.value != 0)  {
+        xhttpAssincrono(showCard,2,value);
+    }
+}
+
+// Carrega as carta de Magic selecionada e adiciona a view.
+function showCard(file){    
+
+    var cards = JSON.parse(file)    
+    
+    document.getElementById("content").style.display = "inline"; 
+    
+    var text = comboCards.options[comboCards.selectedIndex].text
+ 
+    for(i = 0; i < cards.cards.length; i++){
+
+        if (text == cards.cards[i].name) {
+
+            document.getElementById('name').innerHTML = "Nome: " + cards.cards[i].name;
+            document.getElementById('imagem').src = cards.cards[i].imageUrl;
+            document.getElementById('rarity').innerHTML = "Raridade: " + cards.cards[i].rarity;          
+            document.getElementById('color').innerHTML = "Cor: " + cards.cards[i].colors;    
+            document.getElementById('cost').innerHTML = "Custo: " + cards.cards[i].manaCost;     
+            document.getElementById('type').innerHTML = "Tipo: " + cards.cards[i].types;         
+        }     
+    }      
 }
 
 
