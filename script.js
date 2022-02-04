@@ -17,10 +17,13 @@ function addEditions(file){
 
     for(i = 0; i < editions.sets.length; i++){
         
-        var option = document.createElement("option"); 
-        option.value = editions.sets[i].code;
-        option.innerHTML = editions.sets[i].name;
-        comboEditions.appendChild(option);
+        if (editions.sets[i].type != "memorabilia" && editions.sets[i].type != "funny" && editions.sets[i].type != "promo") {
+           
+            var option = document.createElement("option"); 
+            option.value = editions.sets[i].code;
+            option.innerHTML = editions.sets[i].name;
+            comboEditions.appendChild(option);
+        }
     }   
 }
 
