@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+	<title>Magic: The Gathering</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="css/style.css">
+
+    <!-- Google Charts and Javascript files-->
+    <script src="js/script.js"></script>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+
+    // Load the Visualization API and the corechart package.
+    google.charts.load('current', {'packages':['corechart']});
+    
+    // Set a callback to run when the Google Visualization API is loaded.
+    //google.charts.setOnLoadCallback(getPokemonInfo);
+    google.charts.setOnLoadCallback(drawChart);
+    </script>
+
+</head> 
+
+<body onload="getData()">
+
+    <div class="container">
+        <div class="row">
+            <div class="col-12 offset-lg-1 col-lg-10">  <!-- Design responsivo!! -->
+
+                <!-- Jumbotron -->
+                <div class="jumbotron"> 
+                  <div class="row">
+                    <div class="col-lg-10 col-12">
+                      <!-- Title -->         
+                      <img src="img/magic.png" height="65" width="65">             
+                      <h1 class="display-5 text-lg-left text-center">Magic: The Gathering</h1>
+                                            
+                    </div>
+                    <div class="col-lg-2 col-12">
+                      <!-- Modal button to show local storage information -->
+                      <div class="row">
+                        <div class="col text-center">
+                      <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bd-example-modal-lg">Minhas Cartas</button>
+                        </div>
+                      </div>
+                      
+                      <!-- Modal content - Information about the six chosen pokemon -->
+                      <div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-lg">
+                          <div class="modal-content">
+                            <div class="modal-header">
+                              <h5 class="modal-title" id="exampleModalLongTitle">Gerenciador de Decks</h5>
+                              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                              </button>
+                            </div>
+                            <div class="modal-body">
+                              <!-- Insert the selected pokemon-->
+                              <div class="row">
+                                <div class="col-12">
+                                  <p>Minha Decklist:</p>
+                                </div>
+                              </div>
+                              <div class="row">
+                                <div class="col-4 text-center"><div id="pokemon1"></div></div>
+                                <div class="col-4 text-center"><div id="pokemon2"></div></div>
+                                <div class="col-4 text-center"><div id="pokemon3"></div></div>
+                              </div>
+                              <div class="row">
+                                <div class="col-4 text-center"><div id="pokemon4"></div></div>
+                                <div class="col-4 text-center"><div id="pokemon5"></div></div>
+                                <div class="col-4 text-center"><div id="pokemon6"></div></div>
+                              </div>
+                              <div class="row">
+                                <div class="col-12 text-center p-3">
+                                  <button type="button" onclick="resetTeam()" class="btn btn-primary">Esvaziar Deck</button>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                
+                <hr class="my-4">
+                
+                  <!-- Selecionando edição e carta -->
+                  <div class="row">
+                      <!-- Lista de regiões --> 
+                      <div class="col-9 offset-0 ">
+                          <p><i>Escolha a edição:</i></p>
+                          <div onload="getData()" onchange="getCardsList()" id="content1" ></div>
+                      </div>
+                      <!-- Lista dos pokemon da região selecionada -->
+                      <div class="col-9" style="margin-top: 20px">
+                          <p><i>Escolha a carta:</i></p>
+                          <div onchange="getCardsData()" id="content2"></div>
+                      </div>
+                  </div>
+
+                  <hr class="my-4">
+
+                  <!-- Mostrando as informações da carta selecionada-->
+                  <div class="row justify-content-center">
+                    <div class="col-12 text-center">
+                      <h1 id="nameCard"></h1>
+                    </div>
+                  </div>                  
+                  
+                  <div class="row justify-content-center">
+                    <div class="col-10 m-2">
+                      <p id="descriptionCard"></p>
+                    </div>
+                  </div>
+
+                  
+                    <div class="row justify-content-center">
+                      <div class="col-12 col-lg-6">   <!-- Design responsivo!! -->
+                        <!-- Imagens e INFO básica: Tipo, altura e peso -->
+                        <div class="row">
+                          <div class="col-6 offset-3">
+                            <div class="text-center"> <!-- Center the image-->
+                              <img class="img-fluid" id="imgCard" src="">
+                            </div>
+                          </div>
+
+                          <div class="col-2 justify-content-center offset-10">
+                            <div class="text-center" id="chart_div"> <!-- Center the image-->
+                              <img class="img-fluid" id="imgShinyPokemon" width="50%" height="50%">
+                            </div>
+                          </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-12 py-3">
+                          <div class="text-center"> <!-- Center the text-->
+                            <div id="typePokemon"></div>
+                            <div id="height"></div>
+                            <div id="weight"></div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-12 text-center">
+                          <div id="addCard"></div>
+                        </div>
+                      </div>
+                    </div>
+
+                      <div class="col-12 col-lg-6"> <!-- Design responsivo!! -->
+                        <div class="text-center"> <!-- Center the image-->
+                          <div id="columnChart" style="width: 100%; height: 100%;"></div>
+                        </div>
+                      </div>
+
+                  </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+  </body>
+</html>

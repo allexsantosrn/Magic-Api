@@ -17,7 +17,7 @@ function addEditions(file){
 
     for(i = 0; i < editions.sets.length; i++){
         
-        if (editions.sets[i].type != "memorabilia" && editions.sets[i].type != "funny" && editions.sets[i].type != "promo") {
+        if (editions.sets[i].name == "Odyssey") {
            
             var option = document.createElement("option"); 
             option.value = editions.sets[i].code;
@@ -113,6 +113,31 @@ function showCard(file){
         }     
     }      
 }
+
+function drawChart() {
+
+    // Create the data table.
+    var data = new google.visualization.DataTable();
+    data.addColumn('string', 'Topping');
+    data.addColumn('number', 'Slices');
+    data.addRows([
+      ['Mushrooms', 1],
+      ['Onions', 2],
+      ['Olives', 0],
+      ['Zucchini', 0],
+      ['Pepperoni', 1]
+    ]);
+
+    // Set chart options
+    var options = {'title':'How Much Pizza I Ate Last Night',
+                   'width':400,
+                   'height':300,
+                   'is3D': true};
+
+    // Instantiate and draw our chart, passing in some options.
+    var chart = new google.visualization.PieChart(document.getElementById('chart_div'));
+    chart.draw(data, options);
+  }
 
 
 
