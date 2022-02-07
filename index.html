@@ -19,7 +19,7 @@
     google.charts.load('current', {'packages':['corechart']});
     
     // Set a callback to run when the Google Visualization API is loaded.
-    //google.charts.setOnLoadCallback(getPokemonInfo);
+    //google.charts.setOnLoadCallback(returnCards);
     google.charts.setOnLoadCallback(drawChart);
     </script>
 
@@ -44,7 +44,7 @@
                       <!-- Modal button to show local storage information -->
                       <div class="row">
                         <div class="col text-center">
-                      <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bd-example-modal-lg">Minhas Cartas</button>
+                      <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bd-example-modal-lg" onclick="addDeckView()" >Minhas Cartas</button>
                         </div>
                       </div>
                       
@@ -61,23 +61,14 @@
                             <div class="modal-body">
                               <!-- Insert the selected pokemon-->
                               <div class="row">
-                                <div class="col-12">
+                                <div class="col-12" id="viewCards">
                                   <p>Minha Decklist:</p>
                                 </div>
                               </div>
-                              <div class="row">
-                                <div class="col-4 text-center"><div id="pokemon1"></div></div>
-                                <div class="col-4 text-center"><div id="pokemon2"></div></div>
-                                <div class="col-4 text-center"><div id="pokemon3"></div></div>
-                              </div>
-                              <div class="row">
-                                <div class="col-4 text-center"><div id="pokemon4"></div></div>
-                                <div class="col-4 text-center"><div id="pokemon5"></div></div>
-                                <div class="col-4 text-center"><div id="pokemon6"></div></div>
-                              </div>
+                              
                               <div class="row">
                                 <div class="col-12 text-center p-3">
-                                  <button type="button" onclick="resetTeam()" class="btn btn-primary">Esvaziar Deck</button>
+                                  <button type="button" onclick="eraseDeck()" class="btn btn-primary" id="erase">Esvaziar Deck</button>
                                 </div>
                               </div>
                             </div>
@@ -110,7 +101,7 @@
                     <div class="col-12 text-center">
                       <h1 id="nameCard"></h1>
                     </div>
-                  </div>                  
+                  </div>
                   
                   <div class="row justify-content-center">
                     <div class="col-10 m-2">
@@ -118,7 +109,6 @@
                     </div>
                   </div>
 
-                  
                     <div class="row justify-content-center">
                       <div class="col-12 col-lg-6">   <!-- Design responsivo!! -->
                         <!-- Imagens e INFO básica: Tipo, altura e peso -->
@@ -128,12 +118,7 @@
                               <img class="img-fluid" id="imgCard" src="">
                             </div>
                           </div>
-
-                          <div class="col-2 justify-content-center offset-10">
-                            <div class="text-center" id="chart_div"> <!-- Center the image-->
-                              <img class="img-fluid" id="imgShinyPokemon" width="50%" height="50%">
-                            </div>
-                          </div>
+                         
                       </div>
                       <div class="row">
                         <div class="col-12 py-3">
@@ -146,14 +131,14 @@
                       </div>
                       <div class="row">
                         <div class="col-12 text-center">
-                          <div id="addCard"></div>
+                          <div id="addCard" onclick="addCardList()"></div>
                         </div>
                       </div>
                     </div>
 
                       <div class="col-12 col-lg-6"> <!-- Design responsivo!! -->
                         <div class="text-center"> <!-- Center the image-->
-                          <div id="columnChart" style="width: 100%; height: 100%;"></div>
+                          <div id="chart_div" style="width: 100%; height: 100%;"></div>
                         </div>
                       </div>
 

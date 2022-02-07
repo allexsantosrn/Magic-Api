@@ -32,10 +32,24 @@ function xhttpAssincrono(callBackFunction, type, value) {
     xhttp.send();
 }
 
+var common = 0;
+
+var rare = 0;
+
+var uncommon = 0;
+
+var mythic = 0;
+
+var cardList = new Array();
+
+var nameCard = "name";
+
+var rarity = "rarity";
+
 // Função que inicializa a consulta das edições de Magic.
 function getData() {
-
-    xhttpAssincrono(returnEditions,1);
+    startStorage();
+    xhttpAssincrono(returnEditions,1);    
 }
 
 // Realiza por meio do AJAX a consulta das edições de Magic e cria o combo das edições.
@@ -65,8 +79,8 @@ function returnEditions(file) {
             option.innerHTML = json.sets[i].name;
             comboEditions.appendChild(option);
         }
-    }
-    
+    }    
+
 }   
 
 // Função que obtém uma lista de cartas através do AJAX.
@@ -75,7 +89,7 @@ function getCardsList(){
     xhttpAssincrono(returnCards, 2, edition);
 }
 
-// Realiza por meio do AJAX a consulta das cardas de Magic e cria o combo das catas.
+// Realiza por meio do AJAX a consulta das cartas de Magic e cria o combo das catas.
 function returnCards(file){
 
     var div = document.getElementById("content2");
@@ -97,15 +111,16 @@ function returnCards(file){
         option.value = i;
         option.innerHTML = json.cards[i].name;
         comboCards.appendChild(option);       
-    }  
-
+    }
 }
 
+// Função que obtém uma lista de cartas de uma edição através do AJAX.
 function getCardsData(){
     var edition = document.getElementById("edition").value;
     xhttpAssincrono(returnCardInfo,2,edition);                       
 }
 
+// Realiza por meio do AJAX a consulta os dados da carta de Magic selecionada.
 function returnCardInfo(resposta){
 
     json = JSON.parse(resposta); 
@@ -122,7 +137,8 @@ function returnCardInfo(resposta){
             document.getElementById('typePokemon').innerHTML = "Type: "+json.cards[i].types;
             document.getElementById('height').innerHTML = "Cost Mana: "+json.cards[i].manaCost;
             document.getElementById('weight').innerHTML = "Rarity: "+json.cards[i].rarity;       
-            var rarity = json.cards[i].rarity; 
+            rarity = json.cards[i].rarity; 
+            nameCard = json.cards[i].name;
         } 
 
     }      
@@ -142,6 +158,134 @@ function returnCardInfo(resposta){
     div.appendChild(button);    
 }
 
+// Adiciona a carta selecionada ao deck de cartas do usuário.
+function addCardList(){
+
+    google.setOnLoadCallback(drawChart);
+
+    document.getElementById('chart_div').style.display = "inline";
+
+    if (cardList.includes(nameCard)){        
+        alert("Carta já foi adicionada á sua lista de cartas. Selecione outra carta!!!");
+    }
+
+    else if (cardList.length >= 10) {
+        alert("Limite de 10 cartas atingido para o deck!!!");
+    }   
+
+    else {        
+        cardList.push(nameCard);
+        incrementRarity();
+        localStorage.setItem('listaCartas', JSON.stringify(cardList));
+        localStorage.setItem('rare', JSON.stringify(rare));
+        localStorage.setItem('common', JSON.stringify(common));
+        localStorage.setItem('uncommon', JSON.stringify(uncommon));
+        localStorage.setItem('mythic', JSON.stringify(mythic));
+    }
+
+}
+
+// Incrementa as variáveis globais de raridade.
+function incrementRarity() {
+
+    if (rarity == "Rare") {
+        rare ++;
+    }
+
+    else if (rarity == "Common") {
+        common ++;
+    }
+
+    else if (rarity == "Uncommon") {
+        uncommon ++;
+    }
+
+    else if (rarity == "Mythic") {
+        mythic ++;
+    }
+}
+
+// Função que exibe as cartas adicionadas pelo usuário.
+function addDeckView() {
+
+    var list = document.getElementById("viewCards");
+
+    while (list.hasChildNodes()) {
+
+        list.removeChild(list.firstChild);
+    }
+
+    for (i = 0; i < cardList.length; i++) {
+
+        var item = document.createElement("li");        
+        item.innerHTML = cardList[i];
+        list.appendChild(item); 
+    }
+
+}
+
+// Função que apaga o deck do usuário.
+function eraseDeck() {
+
+    google.setOnLoadCallback(drawChart);
+
+    var list = document.getElementById("viewCards");
+
+    while (list.hasChildNodes()) {
+
+        list.removeChild(list.firstChild);
+    }
+
+    for (i = 0; i <= cardList.length; i++) {
+
+        cardList.pop();
+        clearRarity();
+        localStorage.clear();
+    }
+
+    document.getElementById('chart_div').style.display = "none";   
+}
+
+// Função que zera os valores das variáveis globais de índice de raridade.
+function clearRarity() {
+
+    rare = 0;
+    common = 0;
+    uncommon = 0;
+    mythic = 0;
+}
+
+function startStorage(){
+
+    let data = localStorage.getItem('listaCartas');
+
+    let cartas = JSON.parse(data);
+
+  //  let rareReturn = parseInt(localStorage.getItem('rare'));
+   // let commonReturn = parseInt(localStorage.getItem('common'));
+   // let uncommonReturn = parseInt(localStorage.getItem('uncommon'));  
+   // let mythicReturn = parseInt(localStorage.getItem('mythic'));
+
+    /*
+    for (i = 0; i < cartas.length; i++){
+
+        cardList[i] = cartas[i];
+    } */
+
+    /*
+    if (rareReturn > 0 || commonReturn > 0 || uncommonReturn > 0 || mythicReturn > 0) {
+
+       // rare = rareReturn;
+        //common = commonReturn;
+        //uncommon = uncommonReturn;
+        mythic = mythicReturn;
+
+        //google.setOnLoadCallback(drawChart);
+    }    */
+
+}
+
+// Função que executa o desenho do gráfico do Google Chart.
 function drawChart() {
 
     // Create the data table.
@@ -149,15 +293,14 @@ function drawChart() {
     data.addColumn('string', 'Topping');
     data.addColumn('number', 'Slices');
     data.addRows([
-      ['Mushrooms', 1],
-      ['Onions', 2],
-      ['Olives', 0],
-      ['Zucchini', 0],
-      ['Pepperoni', 1]
+      ['Common', common],
+      ['Uncommon', uncommon],
+      ['Rare', rare],
+      ['Mythic', mythic],
     ]);
 
     // Set chart options
-    var options = {'title':'How Much Pizza I Ate Last Night',
+    var options = {'title':'Índice de raridade das cartas',
                    'width':400,
                    'height':300,
                    'is3D': true};

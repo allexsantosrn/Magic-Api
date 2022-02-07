@@ -2,6 +2,9 @@ body {
     background-color: #F4F7E5;
 }
 
+#chart_div{
+    display: none;
+}
 
 
 
