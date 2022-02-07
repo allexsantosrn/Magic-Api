@@ -260,8 +260,6 @@ function startStorage(){
     let data = localStorage.getItem('listaCartas');
 
     let cartas = JSON.parse(data);
-
-    console.log(cartas);
     
     let rareReturn = parseInt(localStorage.getItem('rare'));
     let commonReturn = parseInt(localStorage.getItem('common'));
@@ -281,10 +279,15 @@ function startStorage(){
         rare = rareReturn;
         common = commonReturn;
         uncommon = uncommonReturn;
-        mythic = mythicReturn;
+        mythic = mythicReturn;     
 
-        //google.setOnLoadCallback(drawChart);
+        google.setOnLoadCallback(drawChart);   
+
+        document.getElementById('chart_div').style.display = "inline";  
     }    
+
+  
+ 
 
 }
 
@@ -297,7 +300,7 @@ function drawChart() {
     data.addColumn('number', 'Slices');
     data.addRows([
       ['Common', common],
-      ['Uncommon', uncommon],
+      ['Uncommon', uncommon],   
       ['Rare', rare],
       ['Mythic', mythic],
     ]);
