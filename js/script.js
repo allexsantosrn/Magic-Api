@@ -261,27 +261,30 @@ function startStorage(){
 
     let cartas = JSON.parse(data);
 
-  //  let rareReturn = parseInt(localStorage.getItem('rare'));
-   // let commonReturn = parseInt(localStorage.getItem('common'));
-   // let uncommonReturn = parseInt(localStorage.getItem('uncommon'));  
-   // let mythicReturn = parseInt(localStorage.getItem('mythic'));
+    console.log(cartas);
+    
+    let rareReturn = parseInt(localStorage.getItem('rare'));
+    let commonReturn = parseInt(localStorage.getItem('common'));
+    let uncommonReturn = parseInt(localStorage.getItem('uncommon'));  
+    let mythicReturn = parseInt(localStorage.getItem('mythic'));
 
-    /*
-    for (i = 0; i < cartas.length; i++){
+    if (cartas != null) {
 
-        cardList[i] = cartas[i];
-    } */
+        for (i = 0; i < cartas.length; i++){
 
-    /*
+            cardList[i] = cartas[i];
+        }    
+    }
+
     if (rareReturn > 0 || commonReturn > 0 || uncommonReturn > 0 || mythicReturn > 0) {
 
-       // rare = rareReturn;
-        //common = commonReturn;
-        //uncommon = uncommonReturn;
+        rare = rareReturn;
+        common = commonReturn;
+        uncommon = uncommonReturn;
         mythic = mythicReturn;
 
         //google.setOnLoadCallback(drawChart);
-    }    */
+    }    
 
 }
 
