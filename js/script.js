@@ -237,7 +237,7 @@ function eraseDeck() {
 
     while (cardList.length) {
 
-        cardList.splice(0,1);   // Removendo os itens do array.
+        cardList.splice(0,1);   // Removendo os itens do array de cartas.
         clearRarity();          // Zerando as variáveis globais de raridade.
         localStorage.clear();   // Limpando Storage.
     }    
