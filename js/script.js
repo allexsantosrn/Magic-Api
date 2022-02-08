@@ -102,6 +102,13 @@ function returnCards(file){
     comboCards.setAttribute("id","card");
     div.appendChild(comboCards);
 
+    var option = document.createElement("option"); 
+    option.innerHTML = "Selecione"
+    option.value = -1;
+    option.disabled = true
+    comboCards.appendChild(option)
+    comboCards.selectedIndex = 0
+
     json = JSON.parse(file); 
 
     for(i = 0; i < json.cards.length; i++){
@@ -306,6 +313,7 @@ function drawChart() {
     var options = {'title':'Índice de raridade das cartas',
                    'width':400,
                    'height':300,
+                   'backgroundColor': '#DCDCDC',
                    'is3D': true};
 
     // Instantiate and draw our chart, passing in some options.
