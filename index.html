@@ -19,7 +19,6 @@
     google.charts.load('current', {'packages':['corechart']});
     
     // Set a callback to run when the Google Visualization API is loaded.
-    //google.charts.setOnLoadCallback(returnCards);
     google.charts.setOnLoadCallback(drawChart);
     </script>
 
@@ -27,28 +26,28 @@
 
 <body onload="getData()">
 
-    <div class="container">
-        <div class="row">
+    <div class="container" >
+        <div class="row"> 
             <div class="col-12 offset-lg-1 col-lg-10">  <!-- Design responsivo!! -->
 
                 <!-- Jumbotron -->
-                <div class="jumbotron"> 
+                <div class="jumbotron" id="screen"> 
                   <div class="row">
                     <div class="col-lg-10 col-12">
-                      <!-- Title -->         
+                      <!-- Título -->         
                       <img src="img/magic.png" height="65" width="65">             
                       <h1 class="display-5 text-lg-left text-center">Magic: The Gathering</h1>
                                             
                     </div>
                     <div class="col-lg-2 col-12">
-                      <!-- Modal button to show local storage information -->
+                      
                       <div class="row">
                         <div class="col text-center">
-                      <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bd-example-modal-lg" onclick="addDeckView()" >Minhas Cartas</button>
+                      <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bd-example-modal-lg" onclick="addDeckView()" id="myCards" >Minhas Cartas</button>
                         </div>
                       </div>
                       
-                      <!-- Modal content - Information about the six chosen pokemon -->
+                      <!-- Modal -->
                       <div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
                         <div class="modal-dialog modal-lg">
                           <div class="modal-content">
@@ -59,10 +58,9 @@
                               </button>
                             </div>
                             <div class="modal-body">
-                              <!-- Insert the selected pokemon-->
+                              <!-- Lista as cartas desejadas -->
                               <div class="row">
                                 <div class="col-12" id="viewCards">
-                                  <p>Minha Decklist:</p>
                                 </div>
                               </div>
                               
@@ -80,14 +78,14 @@
                 
                 <hr class="my-4">
                 
-                  <!-- Selecionando edição e carta -->
+                  <!-- Selecionando a edição e carta -->
                   <div class="row">
                       <!-- Lista de regiões --> 
                       <div class="col-9 offset-0 ">
                           <p><i>Escolha a edição:</i></p>
                           <div onload="getData()" onchange="getCardsList()" id="content1" ></div>
                       </div>
-                      <!-- Lista dos pokemon da região selecionada -->
+                      <!-- Lista de cartas de edição selecionada -->
                       <div class="col-9" style="margin-top: 20px">
                           <p><i>Escolha a carta:</i></p>
                           <div onchange="getCardsData()" id="content2"></div>
@@ -111,10 +109,10 @@
 
                     <div class="row justify-content-center">
                       <div class="col-12 col-lg-6">   <!-- Design responsivo!! -->
-                        <!-- Imagens e INFO básica: Tipo, altura e peso -->
+                        <!-- Imagens e dados básicos da carta-->
                         <div class="row">
                           <div class="col-6 offset-3">
-                            <div class="text-center"> <!-- Center the image-->
+                            <div class="text-center"> <!-- Centralizando a imagem -->
                               <img class="img-fluid" id="imgCard" src="">
                             </div>
                           </div>
@@ -122,10 +120,10 @@
                       </div>
                       <div class="row">
                         <div class="col-12 py-3">
-                          <div class="text-center"> <!-- Center the text-->
-                            <div id="typePokemon"></div>
-                            <div id="height"></div>
-                            <div id="weight"></div>
+                          <div class="text-center"> <!-- Centralizando o texto -->
+                            <div id="type"></div>
+                            <div id="cost"></div>
+                            <div id="rarity"></div>
                           </div>
                         </div>
                       </div>
@@ -137,7 +135,7 @@
                     </div>
 
                       <div class="col-12 col-lg-6"> <!-- Design responsivo!! -->
-                        <div class="text-center"> <!-- Center the image-->
+                        <div class="text-center"> <!-- Centralizando a imagem -->
                           <div id="chart_div" style="width: 100%; height: 100%;"></div>
                         </div>
                       </div>
@@ -155,5 +153,19 @@
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    <script>
+
+  $.ajax({
+          headers: { 'X-Auth-Token': 'd467552e0c1b4ec48915c22e82e7772f' },
+          url: 'http://api.football-data.org/v2/competitions/BL1/standings',
+          dataType: 'json',
+          type: 'GET',
+        }).done(function(response) {
+          // do something with the response, e.g. isolate the id of a linked resource   
+          console.log(response);
+        });
+
+      
+    </script>
   </body>
 </html>

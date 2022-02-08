@@ -32,22 +32,22 @@ function xhttpAssincrono(callBackFunction, type, value) {
     xhttp.send();
 }
 
-var common = 0;
+var common = 0;  // Variável global que armazena o número de cartas comuns.
 
-var rare = 0;
+var rare = 0; // Variável global que armazena o número de cartas raras.
 
-var uncommon = 0;
+var uncommon = 0; // Variável global que armazena o número de cartas incomuns.
 
-var mythic = 0;
+var mythic = 0; // Variável global que armazena o número de cartas míticas.
 
-var cardList = new Array();
+var cardList = new Array(); // Arraylist que armazena as cartas adicionadas.
 
-var nameCard = "name";
+var nameCard = "name"; // Variável que armazena a carta selecionada.
 
-var rarity = "rarity";
+var rarity = "rarity"; // Variável que armazena a raridade da carta selecionada.
 
 // Função que inicializa a consulta das edições de Magic.
-function getData() {
+function getData() {    
     startStorage();
     xhttpAssincrono(returnEditions,1);    
 }
@@ -57,7 +57,7 @@ function returnEditions(file) {
 
     var div = document.getElementById("content1");
 
-    var comboEditions = document.createElement("select")
+    var comboEditions = document.createElement("select") // Criando o combo para seleção das edições.
     comboEditions.setAttribute("id","edition");
     div.appendChild(comboEditions);    
     
@@ -80,7 +80,6 @@ function returnEditions(file) {
             comboEditions.appendChild(option);
         }
     }    
-
 }   
 
 // Função que obtém uma lista de cartas através do AJAX.
@@ -134,9 +133,9 @@ function returnCardInfo(resposta){
             document.getElementById('nameCard').innerHTML = json.cards[i].name;
             document.getElementById('descriptionCard').innerHTML = json.cards[i].text;
             document.getElementById('imgCard').src = json.cards[i].imageUrl;
-            document.getElementById('typePokemon').innerHTML = "Type: "+json.cards[i].types;
-            document.getElementById('height').innerHTML = "Cost Mana: "+json.cards[i].manaCost;
-            document.getElementById('weight').innerHTML = "Rarity: "+json.cards[i].rarity;       
+            document.getElementById('type').innerHTML = "Type: "+json.cards[i].types;
+            document.getElementById('cost').innerHTML = "Cost Mana: "+json.cards[i].manaCost;
+            document.getElementById('rarity').innerHTML = "Rarity: "+json.cards[i].rarity;       
             rarity = json.cards[i].rarity; 
             nameCard = json.cards[i].name;
         } 
@@ -224,7 +223,7 @@ function addDeckView() {
 
 }
 
-// Função que apaga o deck do usuário.
+// Função que apaga/remove o deck do usuário.
 function eraseDeck() {
 
     google.setOnLoadCallback(drawChart);
@@ -236,12 +235,12 @@ function eraseDeck() {
         list.removeChild(list.firstChild);
     }
 
-    for (i = 0; i <= cardList.length; i++) {
+    while (cardList.length) {
 
-        cardList.pop();
-        clearRarity();
-        localStorage.clear();
-    }
+        cardList.splice(0,1);   // Removendo os itens do array.
+        clearRarity();          // Zerando as variáveis globais de raridade.
+        localStorage.clear();   // Limpando Storage.
+    }    
 
     document.getElementById('chart_div').style.display = "none";   
 }
@@ -255,6 +254,7 @@ function clearRarity() {
     mythic = 0;
 }
 
+// Função que carrega os dados do storage.
 function startStorage(){
 
     let data = localStorage.getItem('listaCartas');
@@ -283,11 +283,8 @@ function startStorage(){
 
         google.setOnLoadCallback(drawChart);   
 
-        document.getElementById('chart_div').style.display = "inline";  
-    }    
-
-  
- 
+        document.getElementById('chart_div').style.display = "inline";   
+    }   
 
 }
 

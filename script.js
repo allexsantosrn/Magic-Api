@@ -1,7 +1,8 @@
 // Carregando selectbox das edições ao carregar a página.
 window.onload = function() {
 
-    xhttpAssincrono(addEditions,1);
+  //  xhttpAssincrono(addEditions,1);
+  teste();
 }
 
 var comboEditions = document.getElementById("comboEditions");
@@ -12,6 +13,8 @@ comboEditions.addEventListener('click', callCards);
 
 // Carrega as edições de Magic e adiciona ao selectbox.
 function addEditions(file){    
+
+
 
     var editions = JSON.parse(file)      
 
@@ -24,7 +27,9 @@ function addEditions(file){
             option.innerHTML = editions.sets[i].name;
             comboEditions.appendChild(option);
         }
-    }   
+    }
+    
+    console.log(editions.competitions);
 }
 
 // Função que ordena os itens do selectbox das edições.
@@ -149,4 +154,33 @@ function xhttpAssincrono(callBackFunction, type, value) {
     xhttp.open("GET", url, true);
     xhttp.send();
 }
+
+function teste(){
+    
+$.ajax({
+    headers: { 'X-Auth-Token': 'd467552e0c1b4ec48915c22e82e7772f' },
+    url: 'http://api.football-data.org/v2/competitions/2003/matches?matchday=1',
+    dataType: 'json',
+    type: 'GET',
+  }).done(function(response) {
+    // do something with the response, e.g. isolate the id of a linked resource   
+    exibir(response)
+
+  })
+}
+
+function exibir(response) { 
+
+    console.log(response.competition.name); 
+
+        console.log(response); 
+
+        var option = document.createElement("option"); 
+        option.innerHTML = response.competition.name;
+        comboEditions.appendChild(option);  
+    
+}
+
+  
+
 

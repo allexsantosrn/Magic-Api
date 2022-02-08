@@ -4,8 +4,11 @@ body {
 
 #chart_div{
     display: none;
-}
+}   
 
+#screen {
+    background-color: #DCDCDC;
+}
 
 
 
