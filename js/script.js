@@ -21,17 +21,13 @@ function xhttpAssincrono(callBackFunction, type, value) {
         case 2:
             url += "cards?set=" + value;
             break;
-        case 3:
-            url += "todos?userId=" + value;
-            break;
-        case 4:
-            url += "comments?postId=" + value;
-            break;
     }
     xhttp.open("GET", url, true);
     xhttp.send();
 }
 
+var limitDeck = 10; // Variável global que armazena o limite máximo de cartas do deck.
+ 
 var common = 0;  // Variável global que armazena o número de cartas comuns.
 
 var rare = 0; // Variável global que armazena o número de cartas raras.
@@ -48,8 +44,8 @@ var rarity = "rarity"; // Variável que armazena a raridade da carta selecionada
 
 // Função que inicializa a consulta das edições de Magic.
 function getData() {    
-    startStorage();
-    xhttpAssincrono(returnEditions,1);    
+    startStorage(); // Iniciar consulta ao storage.
+    xhttpAssincrono(returnEditions,1);  // Inicia a consulta das edições.
 }
 
 // Realiza por meio do AJAX a consulta das edições de Magic e cria o combo das edições.
@@ -72,7 +68,7 @@ function returnEditions(file) {
 
     for(i = 0; i < json.sets.length; i++){
         
-        if (json.sets[i].type == "expansion") {            
+        if (json.sets[i].type == "expansion") {            // Adicionando edições da coleção principal de Magic.
             
             var option = document.createElement("option"); 
             option.value = json.sets[i].code;
@@ -175,8 +171,8 @@ function addCardList(){
         alert("Carta já foi adicionada á sua lista de cartas. Selecione outra carta!!!");
     }
 
-    else if (cardList.length >= 10) {
-        alert("Limite de 10 cartas atingido para o deck!!!");
+    else if (cardList.length >= limitDeck) {
+        alert("Limite de " + cardList.length + " cartas atingido para o deck!!!");
     }   
 
     else {        

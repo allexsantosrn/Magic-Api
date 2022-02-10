@@ -2,14 +2,16 @@
 window.onload = function() {
 
   //  xhttpAssincrono(addEditions,1);
-  teste();
+  teste2();
 }
 
 var comboEditions = document.getElementById("comboEditions");
 
 var comboCards = document.getElementById("comboCards");
 
-comboEditions.addEventListener('click', callCards);
+comboEditions.addEventListener('click', callCards); 
+
+comboEditions.addEventListener('click', callMatches);
 
 // Carrega as edições de Magic e adiciona ao selectbox.
 function addEditions(file){    
@@ -155,32 +157,73 @@ function xhttpAssincrono(callBackFunction, type, value) {
     xhttp.send();
 }
 
-function teste(){
+function callMatches() {
+
+id = comboEditions.value;
+
+console.log(id);
+
+if (comboEditions.value >= 0) {
+
+  teste(id);
+  //console.log(id);
+}
+
+}
+
+function teste(id){
     
 $.ajax({
     headers: { 'X-Auth-Token': 'd467552e0c1b4ec48915c22e82e7772f' },
-    url: 'http://api.football-data.org/v2/competitions/2003/matches?matchday=1',
+    url: 'http://api.football-data.org/v2/competitions/'+id+'/matches',
     dataType: 'json',
     type: 'GET',
   }).done(function(response) {
     // do something with the response, e.g. isolate the id of a linked resource   
-    exibir(response)
+    exibir2(response)
 
   })
 }
 
-function exibir(response) { 
+function teste2(){
+    
+    $.ajax({
+        headers: { 'X-Auth-Token': 'd467552e0c1b4ec48915c22e82e7772f' },
+        url: 'http://api.football-data.org/v2/competitions/',
+        dataType: 'json',
+        type: 'GET',
+      }).done(function(response) {
+        // do something with the response, e.g. isolate the id of a linked resource   
+        exibir(response)
+    
+      })
+    }
 
-    console.log(response.competition.name); 
+function exibir(response) {  
 
-        console.log(response); 
+    for(i = 0; i < response.count; i++){ 
 
         var option = document.createElement("option"); 
-        option.innerHTML = response.competition.name;
-        comboEditions.appendChild(option);  
-    
+        option.value = response.competitions[i].id;
+        option.innerHTML = response.competitions[i].name;
+        comboEditions.appendChild(option);             
+    }
 }
-
   
 
+
+function exibir2(response) {  
+
+    console.log(response);
+    /*
+    for(i = 0; i < response.count; i++){ 
+        
+        var option = document.createElement("option"); 
+        option.value = response.competitions[i].id;
+        option.innerHTML = response.competitions[i].name;
+        comboEditions.appendChild(option);   
+        
+        console.log(response.competitions[i].name);
+    } */
+}
 
