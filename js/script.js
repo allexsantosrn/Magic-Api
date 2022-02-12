@@ -44,7 +44,7 @@ var rarity = "rarity"; // Variável que armazena a raridade da carta selecionada
 
 // Função que inicializa a consulta das edições de Magic.
 function getData() {    
-    startStorage(); // Iniciar consulta ao storage.
+    startStorage(); // Inicia consulta ao storage.
     xhttpAssincrono(returnEditions,1);  // Inicia a consulta das edições.
 }
 
@@ -89,12 +89,12 @@ function returnCards(file){
 
     var div = document.getElementById("content2");
     
-    if(div.hasChildNodes()){
+    if(div.hasChildNodes()){                             // Remove qualquer dado da div, caso exista.
         var child = document.getElementById("card");
         div.removeChild(child); 
     }
 
-    var comboCards = document.createElement("select")
+    var comboCards = document.createElement("select")  // Criando o combo para seleção das cartas.
     comboCards.setAttribute("id","card");
     div.appendChild(comboCards);
 
@@ -107,7 +107,7 @@ function returnCards(file){
 
     json = JSON.parse(file); 
 
-    for(i = 0; i < json.cards.length; i++){
+    for(i = 0; i < json.cards.length; i++){              // Adicionando cartas da coleção selecionada.
            
         var option = document.createElement("option"); 
         option.value = i;
@@ -127,11 +127,11 @@ function returnCardInfo(resposta){
 
     json = JSON.parse(resposta); 
 
-    var card = document.getElementById("card").value;
+    var card = document.getElementById("card").value;    // Pegando id da carta selecionada.
 
     for(i = 0; i < json.cards.length; i++){
 
-        if (card == i) {
+        if (card == i) {    // Exibindo em tela informações da carta selecionada.
 
             document.getElementById('nameCard').innerHTML = json.cards[i].name;
             document.getElementById('descriptionCard').innerHTML = json.cards[i].text;
@@ -147,11 +147,14 @@ function returnCardInfo(resposta){
    
     var div = document.getElementById("addCard");
 
-    if(div.hasChildNodes()){
-        var child = document.getElementById("addButton");
-        div.removeChild(child); 
-    }
+    // Removendo informações da DIV caso existam.
+    while (div.hasChildNodes()){
+       // var child = document.getElementById("addButton");
+      //div.removeChild(child); 
+      div.removeChild(list.firstChild);
+    }   
 
+    // Adicionado botão de adição de carta junto ao deck.
     var button = document.createElement("input");
     button.setAttribute("type","button");
     button.setAttribute("id","addButton");
@@ -167,14 +170,17 @@ function addCardList(){
 
     document.getElementById('chart_div').style.display = "inline";
 
+    // Verificando se carta já foi adicionada à lista de cartas.
     if (cardList.includes(nameCard)){        
         alert("Carta já foi adicionada á sua lista de cartas. Selecione outra carta!!!");
     }
 
+    // Verificando se o limite de cartas do deck já foi atingido.
     else if (cardList.length >= limitDeck) {
         alert("Limite de " + cardList.length + " cartas atingido para o deck!!!");
     }   
 
+    // Adicionando carta ao deck e armazenando no storage.
     else {        
         cardList.push(nameCard);
         incrementRarity();
@@ -269,6 +275,7 @@ function startStorage(){
     let uncommonReturn = parseInt(localStorage.getItem('uncommon'));  
     let mythicReturn = parseInt(localStorage.getItem('mythic'));
 
+    // Transferindo cartas do storage para o deck de cartas.
     if (cartas != null) {
 
         for (i = 0; i < cartas.length; i++){
@@ -277,6 +284,7 @@ function startStorage(){
         }    
     }
 
+    // Incrementando variáveis de raridade para atualização do gráfico.
     if (rareReturn > 0 || commonReturn > 0 || uncommonReturn > 0 || mythicReturn > 0) {
 
         rare = rareReturn;
