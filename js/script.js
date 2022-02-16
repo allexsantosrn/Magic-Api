@@ -294,7 +294,7 @@ function startStorage(){
 
         google.setOnLoadCallback(drawChart);   
 
-        document.getElementById('chart_div').style.display = "inline";   
+        document.getElementById('chart_div').style.display = "inline";   // Exibindo gráfico.
     }   
 
 }
